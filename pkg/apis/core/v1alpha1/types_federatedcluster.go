@@ -141,3 +141,18 @@ type Resources struct {
 	// +optional
 	Available corev1.ResourceList `json:"available,omitempty"`
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ClusterProxyOptions is the query options to a Cluster's proxy call.
+type ClusterProxyOptions struct {
+	metav1.TypeMeta `json:",inline"`
+
+	// Path is the part of URLs that include clusters, suffixes,
+	// and parameters to use for the current proxy request to cluster.
+	// For example, the whole request URL is
+	// http://localhost/apis/core.kubeadmiral.io/v1alpha1/federatedclusters/{clustername}/proxy/api/v1/nodes
+	// Path is api/v1/nodes
+	// +optional
+	Path string `json:"path,omitempty" protobuf:"bytes,1,opt,name=path"`
+}

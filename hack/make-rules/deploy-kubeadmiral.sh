@@ -111,6 +111,7 @@ KUBE_APISERVER_POD_LABEL="app=kubeadmiral-apiserver"
 KUBE_CONTROLLER_MANAGER_LABEL="app=kubeadmiral-kube-controller-manager"
 KUBEADMIRAL_CONTROLLER_MANAGER_LABEL="app=kubeadmiral-controller-manager"
 KUBEADMIRAL_HPA_AGGREGATOR_LABEL="app=kubeadmiral-hpa-aggregator"
+KUBEADMIRAL_AGGREGATED_APISERVER_LABEL="app=kubeadmiral-aggregated-apiserver"
 
 # 2.1 deploy kubeadmiral etcd
 echo -e "\nDeploying the kubeadmiral-etcd."
@@ -178,3 +179,9 @@ kubectl config set-cluster hpa-aggregator-api \
   --insecure-skip-tls-verify=true \
   --kubeconfig="${HOST_CLUSTER_KUBECONFIG}"
 kubectl config set-context hpa-aggregator --cluster=hpa-aggregator-api --user="${HOST_CLUSTER_CONTEXT}" --kubeconfig="${HOST_CLUSTER_KUBECONFIG}"
+
+# 7. deploy kubeadmiral-aggregated-apiserver component
+echo -e "\nDeploying the kubeadmiral-aggregated-apiserver."
+kubectl --kubeconfig="${HOST_CLUSTER_KUBECONFIG}" --context="${HOST_CLUSTER_CONTEXT}" apply -f "${CONTROLPLANE_DEPLOY_PATH}/kubeadmiral-aggregated-apiserver-apiservice.yaml"
+kubectl --kubeconfig="${META_CLUSTER_KUBECONFIG}" --context="${META_CLUSTER_NAME}" apply -f "${CONTROLPLANE_DEPLOY_PATH}/kubeadmiral-aggregated-apiserver.yaml"
+deploy::wait_pod_ready "${META_CLUSTER_KUBECONFIG}" "${META_CLUSTER_NAME}" "${KUBEADMIRAL_AGGREGATED_APISERVER_LABEL}" "${KUBEADMIRAL_SYSTEM_NAMESPACE}"

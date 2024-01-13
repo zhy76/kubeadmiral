@@ -81,6 +81,7 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&SchedulerPluginWebhookConfigurationList{},
 		&SchedulingProfile{},
 		&SchedulingProfileList{},
+		&ClusterProxyOptions{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil

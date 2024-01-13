@@ -127,8 +127,7 @@ ${GOBIN}/informer-gen -h ${HEADER_FILE} -o ${OUTPUT_DIR} \
 # generate open-api
 OPENAPI_OUTPUT_PACKAGE="${MODULE_NAME}/pkg/client/openapi"
 
-echo "Generating openapi"
-# only hpaaggregator need to generate open-api now
+echo "Generating hpaaggregator openapi"
 ${GOBIN}/openapi-gen -h ${HEADER_FILE} -o ${OUTPUT_DIR} \
   --input-dirs="k8s.io/apimachinery/pkg/apis/meta/v1" \
   --input-dirs="k8s.io/apimachinery/pkg/runtime" \
@@ -144,6 +143,21 @@ ${GOBIN}/openapi-gen -h ${HEADER_FILE} -o ${OUTPUT_DIR} \
   --input-dirs "k8s.io/api/core/v1" \
   --input-dirs="${MODULE_NAME}/pkg/apis/hpaaggregator/v1alpha1" \
   --output-package="${OPENAPI_OUTPUT_PACKAGE}/hpaaggregator" \
+  --output-file-base="zz_generated.openapi" \
+  "$@"
+
+echo "Generating core openapi"
+${GOBIN}/openapi-gen -h ${HEADER_FILE} -o ${OUTPUT_DIR} \
+  --input-dirs "k8s.io/api/core/v1" \
+  --input-dirs="k8s.io/apimachinery/pkg/runtime" \
+  --input-dirs "k8s.io/apimachinery/pkg/api/resource" \
+  --input-dirs "k8s.io/apimachinery/pkg/apis/meta/v1" \
+  --input-dirs "k8s.io/apimachinery/pkg/version" \
+  --input-dirs "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1" \
+  --input-dirs "k8s.io/api/admissionregistration/v1" \
+  --input-dirs "k8s.io/api/networking/v1" \
+  --input-dirs="${MODULE_NAME}/pkg/apis/core/v1alpha1" \
+  --output-package="${OPENAPI_OUTPUT_PACKAGE}/core" \
   --output-file-base="zz_generated.openapi" \
   "$@"
 

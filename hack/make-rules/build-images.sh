@@ -25,6 +25,7 @@ source "${REPO_ROOT}/hack/lib/util.sh"
 components=(
   kubeadmiral-controller-manager
   kubeadmiral-hpa-aggregator
+  kubeadmiral-aggregated-apiserver
 )
 
 REGISTRY=${REGISTRY:-"ghcr.io/kubewharf"}
